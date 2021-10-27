@@ -9,13 +9,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 export class RegisterComponent {
   miFormulario: FormGroup = this.fb.group({
     name: ['Test2', [Validators.required]],
-    email: ['test1@test.com', [Validators.required, Validators.email]],
+    email: ['test2@test.com', [Validators.required, Validators.email]],
     password: ['123456', [Validators.required, Validators.minLength(6)]]
   })
 
   constructor (private readonly fb: FormBuilder) {}
 
   registro (): void {
-    console.log('Formulario: ', this.miFormulario)
+    console.log(this.miFormulario.value)
+    console.log(this.miFormulario.valid)
   }
 }
