@@ -1,13 +1,20 @@
-import { Component, OnInit } from '@angular/core'
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styles: []
+  styles: [`
+    * {
+      margin: 15px;
+    }
+  `]
 })
-export class DashboardComponent implements OnInit {
-  // constructor () { }
+export class DashboardComponent {
+  constructor (private readonly router: Router) {}
 
-  ngOnInit (): void {
+  logout (): void {
+    this.router.navigateByUrl('/auth')
   }
 }

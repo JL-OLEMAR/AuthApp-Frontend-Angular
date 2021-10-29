@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Component } from '@angular/core'
+import { Router } from '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 
 @Component({
@@ -12,10 +14,13 @@ export class LoginComponent {
     password: ['123456', [Validators.required, Validators.minLength(6)]]
   })
 
-  constructor (private readonly fb: FormBuilder) { }
+  constructor (
+    private readonly fb: FormBuilder,
+    private readonly router: Router
+  ) { }
 
   login (): void {
     console.log(this.miFormulario.value)
-    console.log(this.miFormulario.valid)
+    this.router.navigateByUrl('/dashboard')
   }
 }
