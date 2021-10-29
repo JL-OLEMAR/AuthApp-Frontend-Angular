@@ -3,14 +3,12 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "co": "sui-mono commit",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "stylelint **/*.css && ts-standard --fix .",
-    "phoenix": "rm -rf ./node_modules && npm install",
-    "postinstall": "git config core.hooksPath ./git-hooks"
+    "phoenix": "rm -rf ./node_modules && npm install"
   },
   "private": true,
   "dependencies": {
@@ -30,7 +28,6 @@
     "@angular-devkit/build-angular": "12.2.4",
     "@angular/cli": "12.2.4",
     "@angular/compiler-cli": "12.2.0",
-    "@s-ui/mono": "2",
     "@types/jasmine": "3.8.0",
     "@types/node": "12.11.1",
     "jasmine-core": "3.8.0",
