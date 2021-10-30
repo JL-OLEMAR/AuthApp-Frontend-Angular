@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Component } from '@angular/core'
-import { Router } from '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import Swal from 'sweetalert2'
 import { AuthService } from '../../services/auth.service'
 
 @Component({
@@ -21,14 +22,16 @@ export class LoginComponent {
     private readonly authService: AuthService
   ) { }
 
-  login (): void {
-    console.log(this.miFormulario.value)
-
+  login (): any {
     const { email, password } = this.miFormulario.value
+
     this.authService.login(email, password)
       .subscribe(ok => {
-        // console.log(resp)
-        (ok && this.router.navigateByUrl('/dashboard'))
+        if (ok === true) {
+          this.router.navigateByUrl('/dashboard')
+        } else {
+          Swal.fire('Error', ok, 'error')
+        }
       })
   }
 }
