@@ -23,6 +23,9 @@ export class LoginComponent {
   ) { }
 
   login (): any {
+    // this.authService.renovarToken()
+    //   .subscribe(console.log)
+
     const { email, password } = this.miFormulario.value
 
     this.authService.login(email, password)
