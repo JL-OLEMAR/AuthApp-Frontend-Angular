@@ -27,6 +27,8 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, body)
       .pipe(
+        // tap se utiliza para ejecutar una accion antes de que se ejecute el observable
+        // usamos tap para guardar el token en el localstorage (utilidades)
         tap(resp => {
           if (resp.ok) {
             localStorage.setItem('token', resp.token!)
@@ -36,17 +38,29 @@ export class AuthService {
             }
           }
         }),
+        // map se utiliza para transformar el resultado
         map(resp => resp.ok),
         catchError(err => of(err.error.msg))
       )
   }
 
-  // renovar token
-  renovarToken (): any {
+  // validar y regenerar el token
+  validarToken (): Observable<boolean> {
     const url = `${this.baseUrl}/auth/renew`
     const headers = new HttpHeaders()
-      .set('x-token', localStorage.getItem('token') || '') // eslint-disable-line
+      .set('x-token', localStorage.getItem('token') ?? '') // ?? => si es null o undefined, se pone un string vacio
 
-    return this.http.get(url, { headers })
+    return this.http.get<AuthResponse>(url, { headers })
+      .pipe(
+        map(resp => {
+          localStorage.setItem('token', resp.token!)
+          this._usuario = {
+            name: resp.name!,
+            uid: resp.uid!
+          }
+          return resp.ok
+        }),
+        catchError(() => of(false))
+      )
   }
 }

@@ -23,18 +23,13 @@ export class LoginComponent {
   ) { }
 
   login (): any {
-    // this.authService.renovarToken()
-    //   .subscribe(console.log)
-
     const { email, password } = this.miFormulario.value
 
     this.authService.login(email, password)
       .subscribe(ok => {
-        if (ok === true) {
-          this.router.navigateByUrl('/dashboard')
-        } else {
-          Swal.fire('Error', ok, 'error')
-        }
+        (ok === true)
+          ? this.router.navigateByUrl('/dashboard')
+          : Swal.fire('Error', ok, 'error')
       })
   }
 }
