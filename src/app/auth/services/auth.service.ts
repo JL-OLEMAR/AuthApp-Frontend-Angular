@@ -20,6 +20,28 @@ export class AuthService {
 
   constructor (private readonly http: HttpClient) { }
 
+  // service to register
+  registro (name: string, email: string, password: string): Observable<AuthResponse | any> {
+    const url = `${this.baseUrl}/auth/new`
+    const body = { name, email, password }
+
+    return this.http.post<AuthResponse>(url, body)
+      .pipe(
+        tap(resp => {
+          if (resp.ok) {
+            localStorage.setItem('token', resp.token!)
+            this._usuario = {
+              name: resp.name!,
+              uid: resp.uid!
+            }
+          }
+        }),
+        // map se utiliza para transformar el resultado
+        map(resp => resp.ok),
+        catchError(err => of(err.error.msg))
+      )
+  }
+
   // service to login
   login (email: string, password: string): Observable<AuthResponse | any> {
     const url = `${this.baseUrl}/auth`

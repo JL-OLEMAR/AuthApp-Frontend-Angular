@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Component } from '@angular/core'
-import { Router } from '@angular/router'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import Swal from 'sweetalert2'
+import { AuthService } from '../../services/auth.service'
 
 @Component({
   selector: 'app-register',
@@ -17,11 +19,18 @@ export class RegisterComponent {
 
   constructor (
     private readonly fb: FormBuilder,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly authService: AuthService
   ) {}
 
   registro (): void {
-    console.log(this.miFormulario.value)
-    this.router.navigateByUrl('/dashboard')
+    const { name, email, password } = this.miFormulario.value
+
+    this.authService.registro(name, email, password)
+      .subscribe(ok => {
+        (ok === true)
+          ? this.router.navigateByUrl('/dashboard')
+          : Swal.fire('Error', ok, 'error')
+      })
   }
 }
