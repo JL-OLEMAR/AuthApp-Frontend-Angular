@@ -27,17 +27,8 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(url, body)
       .pipe(
-        tap(resp => {
-          if (resp.ok) {
-            localStorage.setItem('token', resp.token!)
-            this._usuario = {
-              name: resp.name!,
-              uid: resp.uid!
-            }
-          }
-        }),
-        // map se utiliza para transformar el resultado
-        map(resp => resp.ok),
+        tap(({ ok, token }) => (ok && localStorage.setItem('token', token!))),
+        map(resp => resp.ok), // map se utiliza para transformar el resultado
         catchError(err => of(err.error.msg))
       )
   }
@@ -51,17 +42,8 @@ export class AuthService {
       .pipe(
         // tap se utiliza para ejecutar una accion antes de que se ejecute el observable
         // usamos tap para guardar el token en el localstorage (utilidades)
-        tap(resp => {
-          if (resp.ok) {
-            localStorage.setItem('token', resp.token!)
-            this._usuario = {
-              name: resp.name!,
-              uid: resp.uid!
-            }
-          }
-        }),
-        // map se utiliza para transformar el resultado
-        map(resp => resp.ok),
+        tap(({ ok, token }) => (ok && localStorage.setItem('token', token!))),
+        map(resp => resp.ok), // map se utiliza para transformar el resultado
         catchError(err => of(err.error.msg))
       )
   }
@@ -78,7 +60,8 @@ export class AuthService {
           localStorage.setItem('token', resp.token!)
           this._usuario = {
             name: resp.name!,
-            uid: resp.uid!
+            uid: resp.uid!,
+            email: resp.email!
           }
           return resp.ok
         }),
